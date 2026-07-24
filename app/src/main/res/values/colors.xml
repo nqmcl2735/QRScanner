@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_primary">#166534</color>
+    <color name="brand_primary_dark">#14532D</color>
+    <color name="brand_secondary">#22C55E</color>
+    <color name="brand_soft">#DCFCE7</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="background">#F7F9F8</color>
+    <color name="text_primary">#17211B</color>
+    <color name="text_secondary">#607068</color>
+    <color name="outline">#DCE4DF</color>
+    <color name="error">#BA1A1A</color>
+    <color name="error_soft">#FEE2E2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Màu nhấn theo tính năng (điều hướng ở Home) và theo loại nội dung QR (chip/nút hành động) -->
+    <color name="accent_blue">#2563EB</color>
+    <color name="accent_blue_soft">#DBEAFE</color>
+    <color name="accent_purple">#7C3AED</color>
+    <color name="accent_purple_soft">#EDE9FE</color>
+    <color name="accent_orange">#EA580C</color>
+    <color name="accent_orange_soft">#FFEDD5</color>
+    <color name="accent_teal">#0D9488</color>
+    <color name="accent_teal_soft">#CCFBF1</color>
+    <color name="accent_rose">#DB2777</color>
+    <color name="accent_rose_soft">#FCE7F3</color>
+    <color name="accent_indigo">#4F46E5</color>
+    <color name="accent_indigo_soft">#E0E7FF</color>
+    <color name="accent_sky">#0EA5E9</color>
+    <color name="accent_sky_soft">#E0F2FE</color>
+    <color name="neutral_soft">#E7ECE9</color>
+
+    <!-- Gradient header -->
+    <color name="hero_gradient_start">#166534</color>
+    <color name="hero_gradient_end">#0F3D22</color>
+    <color name="hero_text_secondary">#C7E6D3</color>
+    <color name="hero_overlay">#26FFFFFF</color>
+</resources>

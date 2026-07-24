@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QR Pocket</string>
+    <string name="home_greeting">Mã QR, đơn giản hơn.</string>
+    <string name="home_description">Tạo và đọc mã QR ngay trên thiết bị. Nhanh chóng, riêng tư, không cần Internet.</string>
+    <string name="create_qr">Tạo mã QR</string>
+    <string name="create_qr_description">Biến văn bản hoặc liên kết thành mã QR</string>
+    <string name="scan_qr">Quét ảnh QR</string>
+    <string name="scan_qr_description">Chọn ảnh có sẵn để đọc nội dung</string>
+    <string name="offline_badge">Hoạt động offline</string>
+    <string name="home_section_title">CHỨC NĂNG</string>
+    <string name="generator_title">Tạo mã QR</string>
+    <string name="generator_subtitle">Nhập nội dung bạn muốn chia sẻ</string>
+    <string name="content_label">Nội dung</string>
+    <string name="content_hint">Ví dụ: https://example.com</string>
+    <string name="content_helper">Văn bản, liên kết hoặc thông tin liên hệ</string>
+    <string name="generate_action">Tạo mã QR</string>
+    <string name="preview_title">Bản xem trước</string>
+    <string name="preview_empty">Mã QR của bạn sẽ xuất hiện ở đây</string>
+    <string name="save_action">Lưu vào thư viện</string>
+    <string name="scanner_title">Quét ảnh QR</string>
+    <string name="scanner_subtitle">Chọn một ảnh từ thư viện của bạn</string>
+    <string name="choose_image">Chọn ảnh từ thư viện</string>
+    <string name="image_empty">Chưa có ảnh được chọn</string>
+    <string name="image_empty_hint">Hỗ trợ PNG, JPG tối đa 5 MB</string>
+    <string name="scan_action">Quét mã</string>
+    <string name="result_title">Nội dung giải mã</string>
+    <string name="result_empty">Kết quả quét sẽ hiển thị tại đây</string>
+    <string name="copy_action">Sao chép</string>
+    <string name="copied">Đã sao chép nội dung</string>
+    <string name="saved_success">Đã lưu mã QR vào Pictures/QRApp</string>
+    <string name="permission_denied">Cần quyền lưu ảnh trên Android 9 trở xuống.</string>
+    <string name="navigate_up">Quay lại</string>
+    <string name="qr_preview">Bản xem trước mã QR</string>
+    <string name="selected_image">Ảnh QR đã chọn</string>
+
+    <string name="share_action">Chia sẻ</string>
+    <string name="share_content_option">Chia sẻ nội dung</string>
+    <string name="share_image_option">Chia sẻ mã QR</string>
+    <string name="share_image_error">Không thể chia sẻ ảnh QR</string>
+
+    <string name="action_open_maps">Mở Maps</string>
+    <string name="action_save_contact">Lưu danh bạ</string>
+    <string name="action_call">Gọi điện</string>
+    <string name="action_send_email">Gửi email</string>
+    <string name="action_send_sms">Nhắn tin</string>
+    <string name="action_open_link">Mở liên kết</string>
+    <string name="action_connect_wifi">Kết nối Wifi</string>
+    <string name="no_maps_app">Không tìm thấy ứng dụng bản đồ</string>
+    <string name="no_contacts_app">Không tìm thấy ứng dụng danh bạ</string>
+    <string name="no_dialer_app">Không tìm thấy ứng dụng gọi điện</string>
+    <string name="no_email_app">Không tìm thấy ứng dụng email</string>
+    <string name="no_sms_app">Không tìm thấy ứng dụng nhắn tin</string>
+    <string name="no_browser_app">Không tìm thấy trình duyệt để mở liên kết</string>
+    <string name="wifi_connecting">Đang kết nối Wifi…</string>
+    <string name="wifi_connect_error">Không thể kết nối Wifi</string>
+    <string name="wifi_suggestion_added">Đã gửi yêu cầu kết nối Wifi</string>
+
+    <string name="history_title">Lịch sử</string>
+    <string name="history_description">Xem lại các mã QR đã tạo và quét</string>
+    <string name="history_empty">Chưa có lịch sử quét hoặc tạo mã QR</string>
+    <string name="history_source_generated">Đã tạo</string>
+    <string name="history_source_scanned">Đã quét</string>
+    <string name="detail_title">Chi tiết mã QR</string>
+    <string name="type_label_text">Văn bản</string>
+    <string name="type_label_wifi">Wifi</string>
+    <string name="type_label_location">Vị trí</string>
+    <string name="type_label_contact">Danh bạ</string>
+    <string name="type_label_email">Email</string>
+    <string name="type_label_phone">Số điện thoại</string>
+    <string name="type_label_sms">Tin nhắn SMS</string>
+    <string name="type_label_url">Liên kết</string>
+
+    <string name="copy_image_action">Sao chép ảnh QR</string>
+    <string name="copy_image_error">Không có ảnh QR để sao chép</string>
+    <string name="copied_image">Đã sao chép ảnh QR</string>
+    <string name="delete_action">Xóa</string>
+    <string name="cancel_action">Hủy</string>
+    <string name="delete_confirm_title">Xóa mã QR này?</string>
+    <string name="delete_confirm_message">Mã QR sẽ bị xóa khỏi lịch sử và không thể khôi phục.</string>
+    <string name="deleted_success">Đã xóa khỏi lịch sử</string>
+</resources>
