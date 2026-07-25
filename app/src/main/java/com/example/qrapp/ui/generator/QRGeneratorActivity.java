@@ -44,6 +44,10 @@ public class QRGeneratorActivity extends BaseActivity {
 
         binding.toolbar.setNavigationContentDescription(R.string.navigate_up);
         binding.toolbar.setNavigationOnClickListener(view -> finish());
+        
+        binding.colorForeground.setOnClickListener(v -> showColorPicker(true));
+        binding.colorBackground.setOnClickListener(v -> showColorPicker(false));
+        
         binding.btnGenerate.setOnClickListener(view -> {
             binding.inputLayout.setError(null);
             viewModel.generateQRCode(String.valueOf(binding.editContent.getText()));
@@ -52,6 +56,56 @@ public class QRGeneratorActivity extends BaseActivity {
         binding.btnShare.setOnClickListener(view -> ShareUtil.showShareChooser(this,
                 String.valueOf(binding.editContent.getText()), viewModel.getCurrentBitmap()));
         observeState();
+    }
+
+    private final int[] PRESET_COLORS = {
+        0xFF000000, 0xFF17211B, 0xFF1A237E, 0xFF0D47A1,
+        0xFF006064, 0xFF1B5E20, 0xFF33691E, 0xFFE65100,
+        0xFFBF360C, 0xFF880E4F, 0xFF4A148C, 0xFF311B92,
+        0xFFFFFFFF, 0xFFF5F5F5, 0xFFFFF8E1, 0xFFE8F5E9,
+        0xFFE3F2FD, 0xFFFCE4EC, 0xFFEDE7F6, 0xFFE0F2F1
+    };
+
+    private void showColorPicker(boolean isForeground) {
+        android.widget.GridLayout grid = new android.widget.GridLayout(this);
+        grid.setColumnCount(4);
+        grid.setPadding(32, 32, 32, 32);
+        
+        androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.color_picker_title)
+                .setView(grid)
+                .create();
+                
+        int size = (int) (48 * getResources().getDisplayMetrics().density);
+        int margin = (int) (8 * getResources().getDisplayMetrics().density);
+        
+        for (int color : PRESET_COLORS) {
+            View colorView = new View(this);
+            android.widget.GridLayout.LayoutParams params = new android.widget.GridLayout.LayoutParams();
+            params.width = size;
+            params.height = size;
+            params.setMargins(margin, margin, margin, margin);
+            colorView.setLayoutParams(params);
+            
+            colorView.setBackgroundResource(R.drawable.bg_soft_circle);
+            colorView.setBackgroundTintList(android.content.res.ColorStateList.valueOf(color));
+            if (color == 0xFFFFFFFF || color == 0xFFF5F5F5) {
+                // Add a border if it's very light (optional, but since we don't have a border drawable easily, just let it be)
+            }
+            
+            colorView.setOnClickListener(v -> {
+                if (isForeground) {
+                    viewModel.setForegroundColor(color);
+                    binding.colorForeground.setBackgroundTintList(android.content.res.ColorStateList.valueOf(color));
+                } else {
+                    viewModel.setBackgroundColor(color);
+                    binding.colorBackground.setBackgroundTintList(android.content.res.ColorStateList.valueOf(color));
+                }
+                dialog.dismiss();
+            });
+            grid.addView(colorView);
+        }
+        dialog.show();
     }
 
     private void observeState() {
