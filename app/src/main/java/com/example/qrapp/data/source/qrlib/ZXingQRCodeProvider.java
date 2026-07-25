@@ -17,10 +17,17 @@ import java.util.Map;
 public class ZXingQRCodeProvider implements IQRCodeProvider {
     @Override
     public Bitmap encode(String content, int width, int height) throws Exception {
+        return encode(content, width, height, BarcodeFormat.QR_CODE);
+    }
+
+    @Override
+    public Bitmap encode(String content, int width, int height, BarcodeFormat format) throws Exception {
         Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-        hints.put(EncodeHintType.MARGIN, 2);
-        BitMatrix matrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+        if (format == BarcodeFormat.QR_CODE) {
+            hints.put(EncodeHintType.MARGIN, 2);
+        }
+        BitMatrix matrix = new MultiFormatWriter().encode(content, format, width, height, hints);
         int[] pixels = new int[width * height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
