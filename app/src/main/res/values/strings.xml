@@ -12,7 +12,7 @@
     <string name="generator_title">Tạo mã QR</string>
     <string name="generator_subtitle">Nhập nội dung bạn muốn chia sẻ</string>
     <string name="content_label">Nội dung</string>
-    <string name="content_hint">Ví dụ: https://example.com</string>
+    <string name="content_hint"> </string>
     <string name="content_helper">Văn bản, liên kết hoặc thông tin liên hệ</string>
     <string name="generate_action">Tạo mã QR</string>
     <string name="preview_title">Bản xem trước</string>
