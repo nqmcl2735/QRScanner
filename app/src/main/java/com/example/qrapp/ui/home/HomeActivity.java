@@ -20,6 +20,7 @@ public class HomeActivity extends BaseActivity {
         insetsController.setAppearanceLightStatusBars(false);
         binding.cardGenerate.setOnClickListener(view -> startActivity(new Intent(this, QRGeneratorActivity.class)));
         binding.cardScan.setOnClickListener(view -> startActivity(new Intent(this, QRScannerActivity.class)));
+        binding.cardBatchScan.setOnClickListener(view -> startActivity(new Intent(this, com.example.qrapp.ui.batchscan.BatchScanActivity.class)));
         binding.cardHistory.setOnClickListener(view -> startActivity(new Intent(this, HistoryActivity.class)));
     }
 }

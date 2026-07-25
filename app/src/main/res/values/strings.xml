@@ -78,5 +78,12 @@
     <string name="cancel_action">Hủy</string>
     <string name="delete_confirm_title">Xóa mã QR này?</string>
     <string name="delete_confirm_message">Mã QR sẽ bị xóa khỏi lịch sử và không thể khôi phục.</string>
-    <string name="deleted_success">Đã xóa khỏi lịch sử</string>
+    <string name="export_file_name">qr_history</string>
+    <string name="batch_scan_title">Quét liên tục</string>
+    <string name="batch_scan_description">Quét nhiều mã QR liên tiếp bằng camera</string>
+    <string name="batch_scan_counter">Đã quét: %d mã</string>
+    <string name="batch_scan_start">Bắt đầu quét</string>
+    <string name="batch_scan_done">Hoàn tất</string>
+    <string name="batch_scan_empty">Chưa quét mã nào. Nhấn "Bắt đầu quét" để bắt đầu.</string>
+    <string name="batch_scan_error">Không thể lưu kết quả quét</string>
 </resources>
