@@ -27,6 +27,9 @@ public class QRGeneratorViewModel extends ViewModel {
     private final MutableLiveData<ParsedQRContent> parsedContent = new MutableLiveData<>();
     private Bitmap currentBitmap;
 
+    private int foregroundColor = 0xFF17211B;
+    private int backgroundColor = 0xFFFFFFFF;
+
     public QRGeneratorViewModel(QRGeneratorRepository repository, HistoryRepository historyRepository) {
         this.repository = repository;
         this.historyRepository = historyRepository;
@@ -39,6 +42,11 @@ public class QRGeneratorViewModel extends ViewModel {
     public LiveData<ParsedQRContent> getParsedContent() { return parsedContent; }
     public Bitmap getCurrentBitmap() { return currentBitmap; }
 
+    public int getForegroundColor() { return foregroundColor; }
+    public void setForegroundColor(int color) { this.foregroundColor = color; }
+    public int getBackgroundColor() { return backgroundColor; }
+    public void setBackgroundColor(int color) { this.backgroundColor = color; }
+
     public void generateQRCode(String rawText) {
         String text = rawText == null ? "" : rawText.trim();
         if (text.isEmpty()) {
@@ -48,7 +56,7 @@ public class QRGeneratorViewModel extends ViewModel {
         loading.setValue(true);
         executor.execute(() -> {
             try {
-                currentBitmap = repository.generateQRBitmap(text, 1024);
+                currentBitmap = repository.generateQRBitmap(text, 1024, foregroundColor, backgroundColor);
                 ParsedQRContent parsed = QRContentParser.parse(text);
                 qrBitmap.postValue(currentBitmap);
                 parsedContent.postValue(parsed);

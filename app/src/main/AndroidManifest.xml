@@ -3,6 +3,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +14,10 @@
         android:theme="@style/Theme.QRScanner">
         <activity android:name=".ui.scanner.QRScannerActivity" android:exported="false" />
         <activity android:name=".ui.generator.QRGeneratorActivity" android:exported="false" />
+        <activity android:name=".ui.generator.QRFormGeneratorActivity" android:exported="false" />
         <activity android:name=".ui.history.HistoryActivity" android:exported="false" />
         <activity android:name=".ui.detail.QRDetailActivity" android:exported="false" />
+        <activity android:name=".ui.batchscan.BatchScanActivity" android:exported="false" />
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true">

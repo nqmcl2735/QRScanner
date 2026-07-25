@@ -19,6 +19,10 @@ public class QRGeneratorRepository {
         return provider.encode(content, size, size);
     }
 
+    public Bitmap generateQRBitmap(String content, int size, int foregroundColor, int backgroundColor) throws Exception {
+        return provider.encode(content, size, size, foregroundColor, backgroundColor);
+    }
+
     public Uri saveBitmapToExternalStorage(Bitmap bitmap, String fileName) throws IOException {
         return storage.saveImage(bitmap, fileName);
     }

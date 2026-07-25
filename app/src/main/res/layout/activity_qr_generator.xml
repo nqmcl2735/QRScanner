@@ -28,6 +28,24 @@
                     android:maxLength="2000" android:paddingTop="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Color Customization Section -->
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp"
+                android:text="@string/color_section_title" android:textColor="@color/text_primary" android:textSize="18sp" android:textStyle="bold" />
+            
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
+                <!-- Foreground color -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <View android:id="@+id/color_foreground" android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/bg_soft_circle" android:backgroundTint="#17211B" android:clickable="true" android:focusable="true"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/color_foreground" android:textColor="@color/text_secondary" />
+                </LinearLayout>
+                
+                <!-- Background color -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <View android:id="@+id/color_background" android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/bg_soft_circle" android:backgroundTint="#FFFFFF" android:clickable="true" android:focusable="true"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/color_background" android:textColor="@color/text_secondary" />
+                </LinearLayout>
+            </LinearLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_generate" style="@style/Widget.QRScanner.PrimaryButton"
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp"

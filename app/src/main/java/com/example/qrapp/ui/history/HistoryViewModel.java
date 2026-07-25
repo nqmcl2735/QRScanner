@@ -15,6 +15,9 @@ public class HistoryViewModel extends ViewModel {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<List<QRHistoryItem>> items = new MutableLiveData<>(Collections.emptyList());
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
+    private final MutableLiveData<String> exportResult = new MutableLiveData<>();
+    private final MutableLiveData<Integer> importResult = new MutableLiveData<>();
+
 
     public HistoryViewModel(HistoryRepository repository) {
         this.repository = repository;
@@ -23,6 +26,9 @@ public class HistoryViewModel extends ViewModel {
 
     public LiveData<List<QRHistoryItem>> getItems() { return items; }
     public LiveData<Boolean> getLoading() { return loading; }
+    public LiveData<String> getExportResult() { return exportResult; }
+    public LiveData<Integer> getImportResult() { return importResult; }
+
 
     public void loadHistory() {
         loading.setValue(true);
@@ -38,6 +44,26 @@ public class HistoryViewModel extends ViewModel {
             items.postValue(repository.getAll());
         });
     }
+
+    public void exportHistory() {
+        loading.setValue(true);
+        executor.execute(() -> {
+            String csv = repository.exportToCsv();
+            exportResult.postValue(csv);
+            loading.postValue(false);
+        });
+    }
+
+    public void importHistory(String csvContent) {
+        loading.setValue(true);
+        executor.execute(() -> {
+            int count = repository.importFromCsv(csvContent);
+            importResult.postValue(count);
+            items.postValue(repository.getAll());
+            loading.postValue(false);
+        });
+    }
+
 
     @Override protected void onCleared() {
         executor.shutdownNow();
