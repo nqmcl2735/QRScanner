@@ -4,12 +4,8 @@ Chức năng đã có:
 - Sao chép nội dung của mã
 - Tạo mã từ văn bản
 - Lưu mã được tạo vào thư viện
-
-Chức năng cần thêm:
 - Kiểm tra loại mã khi tạo/quét:
-  + Location: Mở Maps
-  + Contact: Mở danh bạ, lưu danh bạ
-  + Wifi: Tự động kết nối wifi
+  + Links: Hiển thị dạng links và có thể click để mở.
 - Chức năng history:
   + Tự động lưu: Ngay sau khi quét thành công hoặc tạo thành công 1 mã qr. Ứng dụng tự động ghi lịch sử
   + Xem lịch sử:
@@ -24,3 +20,11 @@ Chức năng cần thêm:
   + Vị trí: Ở màn hình sau khi Tạo Mã QR thành công, Ở màn hình sau khi quét mã QR thành công, Ở màn hình chi tiết thông tin QR Khi mở từ Lịch sử
   + Chức năng: Khi share, được chọn 2 option: Chia sẻ nội dung hoặc chia sẻ mã QR.
   + Thao tác: Sau khi chọn 1 trong 2 tùy chọn chia sẻ, mở ra menu chia sẻ mặc định của Android, từ đây chỉ cần chọn ứng dụng (Tin nhắn, Gmail, ...) và chọn người nhận để gửi đi.
+Chức năng cần thêm:
+- Kiểm tra loại mã khi tạo/quét:
+  + Location: Mở Maps (có - chưa test)
+  + Contact: Mở danh bạ, lưu danh bạ (có - chưa test)
+  + Wifi: Tự động kết nối wifi (có - chưa test)
+  + Email: Tự động mở ứng dụng email, nếu định dạng mailto: thì điền sẵn thông tin(có - chưa test)
+  + Phone: Mở ứng dụng gọi điện, điền sẵn số điện thoại (có - chưa test)
+  + SMS:Mở ứng dụng tin nhắn, điền sẵn: Số điện thoại người nhận, Nội dung từ trường `body`, nếu có (có - chưa test).
