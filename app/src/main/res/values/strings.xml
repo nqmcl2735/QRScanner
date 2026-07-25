@@ -7,6 +7,9 @@
     <string name="create_qr_description">Biến văn bản hoặc liên kết thành mã QR</string>
     <string name="scan_qr">Quét ảnh QR</string>
     <string name="scan_qr_description">Chọn ảnh có sẵn để đọc nội dung</string>
+    <string name="camera_scan">Quét bằng Camera</string>
+    <string name="camera_scan_description">Mở camera để quét mã QR trực tiếp</string>
+    <string name="camera_scan_error">Không thể quét mã QR từ camera</string>
     <string name="offline_badge">Hoạt động offline</string>
     <string name="home_section_title">CHỨC NĂNG</string>
     <string name="generator_title">Tạo mã QR</string>
