@@ -7,5 +7,5 @@ public interface IQRCodeProvider {
     default Bitmap encode(String content, int width, int height, com.google.zxing.BarcodeFormat format) throws Exception {
         return encode(content, width, height);
     }
-    String decode(Bitmap bitmap) throws Exception;
+    com.google.zxing.Result decode(Bitmap bitmap) throws Exception;
 }

@@ -40,7 +40,7 @@ public class ZXingQRCodeProvider implements IQRCodeProvider {
     }
 
     @Override
-    public String decode(Bitmap bitmap) throws Exception {
+    public Result decode(Bitmap bitmap) throws Exception {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] pixels = new int[width * height];
@@ -50,7 +50,6 @@ public class ZXingQRCodeProvider implements IQRCodeProvider {
         Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
         hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-        Result result = new MultiFormatReader().decode(binaryBitmap, hints);
-        return result.getText();
+        return new MultiFormatReader().decode(binaryBitmap, hints);
     }
 }
