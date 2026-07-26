@@ -14,6 +14,10 @@ import com.example.qrapp.R;
 import com.example.qrapp.data.model.ParsedQRContent;
 import com.example.qrapp.data.model.QRContentType;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import android.content.ClipboardManager;
+import android.content.ClipData;
+import android.content.Context;
 import java.util.Locale;
 
 /** Sinh các nút hành động (Mở Maps / Lưu danh bạ / Gọi điện / Gửi email / Kết nối Wifi) tương ứng với loại nội dung QR đã nhận diện. */
@@ -41,7 +45,15 @@ public final class QRActionBinder {
                 break;
             case WIFI:
                 addButton(activity, container, parsed.getType(), R.string.action_connect_wifi, R.drawable.ic_wifi,
-                        view -> WifiConnectHelper.connect(activity, parsed.getSsid(), parsed.getPassword(), parsed.getSecurityType()));
+                        view -> {
+                            new MaterialAlertDialogBuilder(activity)
+                                    .setTitle("Kết nối WiFi")
+                                    .setMessage("Bạn có muốn kết nối với mạng " + parsed.getSsid() + "?")
+                                    .setPositiveButton("Kết nối", (dialog, which) -> 
+                                            WifiConnectHelper.connect(activity, parsed.getSsid(), parsed.getPassword(), parsed.getSecurityType()))
+                                    .setNegativeButton(R.string.cancel_action, null)
+                                    .show();
+                        });
                 break;
             case EMAIL:
                 addButton(activity, container, parsed.getType(), R.string.action_send_email, R.drawable.ic_email,
@@ -62,6 +74,9 @@ public final class QRActionBinder {
             default:
                 break;
         }
+        
+        addButton(activity, container, parsed.getType(), R.string.copy_action, R.drawable.ic_copy,
+                view -> copyToClipboard(activity, parsed.getRawContent()));
         container.setVisibility(container.getChildCount() > 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -104,11 +119,18 @@ public final class QRActionBinder {
     }
 
     private static void callPhone(Activity activity, String phone) {
-        try {
-            activity.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(phone))));
-        } catch (ActivityNotFoundException exception) {
-            Toast.makeText(activity, R.string.no_dialer_app, Toast.LENGTH_LONG).show();
-        }
+        new MaterialAlertDialogBuilder(activity)
+                .setTitle("Gọi điện thoại")
+                .setMessage("Bạn có chắc chắn muốn gọi đến số " + phone + "?")
+                .setPositiveButton("Gọi", (dialog, which) -> {
+                    try {
+                        activity.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(phone))));
+                    } catch (ActivityNotFoundException exception) {
+                        Toast.makeText(activity, R.string.no_dialer_app, Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton(R.string.cancel_action, null)
+                .show();
     }
 
     private static void sendEmail(Activity activity, ParsedQRContent parsed) {
@@ -133,10 +155,32 @@ public final class QRActionBinder {
     }
 
     private static void openUrl(Activity activity, String url) {
+        if (url.startsWith("http://")) {
+            new MaterialAlertDialogBuilder(activity)
+                    .setTitle("Cảnh báo bảo mật")
+                    .setMessage("Liên kết này không sử dụng HTTPS an toàn. Bạn có muốn tiếp tục?")
+                    .setPositiveButton("Tiếp tục", (dialog, which) -> launchUrlIntent(activity, url))
+                    .setNegativeButton(R.string.cancel_action, null)
+                    .show();
+        } else {
+            launchUrlIntent(activity, url);
+        }
+    }
+
+    private static void launchUrlIntent(Activity activity, String url) {
         try {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         } catch (ActivityNotFoundException exception) {
             Toast.makeText(activity, R.string.no_browser_app, Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    private static void copyToClipboard(Activity activity, String text) {
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText("QR Content", text);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(activity, R.string.copied, Toast.LENGTH_SHORT).show();
         }
     }
 
