@@ -78,5 +78,11 @@
     <string name="cancel_action">Hủy</string>
     <string name="delete_confirm_title">Xóa mã QR này?</string>
     <string name="delete_confirm_message">Mã QR sẽ bị xóa khỏi lịch sử và không thể khôi phục.</string>
-    <string name="deleted_success">Đã xóa khỏi lịch sử</string>
+    <string name="export_csv">Xuất CSV</string>
+    <string name="import_csv">Nhập CSV</string>
+    <string name="export_success">Đã xuất lịch sử thành công</string>
+    <string name="export_error">Lỗi khi xuất file: %s</string>
+    <string name="import_success">Đã nhập %d mục lịch sử</string>
+    <string name="import_error">Không thể nhập dữ liệu. Vui lòng kiểm tra định dạng file.</string>
+    <string name="export_file_name">qr_history</string>
 </resources>
