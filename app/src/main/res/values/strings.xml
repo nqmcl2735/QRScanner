@@ -86,4 +86,5 @@
     <string name="batch_scan_done">Hoàn tất</string>
     <string name="batch_scan_empty">Chưa quét mã nào. Nhấn "Bắt đầu quét" để bắt đầu.</string>
     <string name="batch_scan_error">Không thể lưu kết quả quét</string>
+    <string name="deleted_success">Đã xóa khỏi lịch sử</string>
 </resources>

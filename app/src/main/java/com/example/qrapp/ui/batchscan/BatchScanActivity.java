@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.qrapp.R;
@@ -20,29 +19,40 @@ import com.example.qrapp.ui.base.BaseActivity;
 import com.example.qrapp.ui.detail.QRDetailActivity;
 import com.example.qrapp.util.QRContentParser;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanOptions;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.content.ContextCompat;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 public class BatchScanActivity extends BaseActivity {
 
+    private DecoratedBarcodeView barcodeScanner;
     private TextView textCounter;
     private RecyclerView recyclerResults;
-    private Button btnStart, btnDone;
+    private Button btnStartPause, btnDone;
     private BatchScanAdapter adapter;
     private int scanCount = 0;
     private HistoryRepository historyRepository;
     private ExecutorService executorService;
     private Handler mainHandler;
-
-    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(
-            new ScanContract(),
-            result -> {
-                if (result.getContents() != null) {
-                    handleScanResult(result.getContents());
-                    // relaunch scanner
-                    launchScanner();
+    private boolean isScanning = false;
+    private long lastScanTime = 0;
+    
+    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (isGranted) {
+                    startScan();
+                } else {
+                    Toast.makeText(this, "Cần quyền máy ảnh để quét mã", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             });
 
@@ -55,9 +65,10 @@ public class BatchScanActivity extends BaseActivity {
         applySystemBars(findViewById(android.R.id.content), toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
 
+        barcodeScanner = findViewById(R.id.barcode_scanner);
         textCounter = findViewById(R.id.text_counter);
         recyclerResults = findViewById(R.id.recycler_results);
-        btnStart = findViewById(R.id.btn_start);
+        btnStartPause = findViewById(R.id.btn_start_pause);
         btnDone = findViewById(R.id.btn_done);
 
         executorService = Executors.newSingleThreadExecutor();
@@ -68,18 +79,55 @@ public class BatchScanActivity extends BaseActivity {
         recyclerResults.setLayoutManager(new LinearLayoutManager(this));
         recyclerResults.setAdapter(adapter);
 
-        btnStart.setOnClickListener(v -> launchScanner());
+        btnStartPause.setOnClickListener(v -> toggleScan());
         btnDone.setOnClickListener(v -> finish());
         
+        setupScanner();
         updateCounter();
+        checkCameraPermission();
     }
 
-    private void launchScanner() {
-        ScanOptions options = new ScanOptions();
-        options.setPrompt("H\u01b0\u1edbng camera v\u00e0o m\u00e3 QR");
-        options.setBeepEnabled(true);
-        options.setOrientationLocked(false);
-        barcodeLauncher.launch(options);
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            startScan();
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void setupScanner() {
+        barcodeScanner.decodeContinuous(new BarcodeCallback() {
+            @Override
+            public void barcodeResult(BarcodeResult result) {
+                if (result.getText() != null) {
+                    long now = System.currentTimeMillis();
+                    if (now - lastScanTime > 1500) { // Debounce scanning
+                        lastScanTime = now;
+                        handleScanResult(result.getText());
+                    }
+                }
+            }
+        });
+    }
+
+    private void toggleScan() {
+        if (isScanning) {
+            pauseScan();
+        } else {
+            startScan();
+        }
+    }
+
+    private void startScan() {
+        barcodeScanner.resume();
+        isScanning = true;
+        btnStartPause.setText("Tạm dừng");
+    }
+
+    private void pauseScan() {
+        barcodeScanner.pause();
+        isScanning = false;
+        btnStartPause.setText(R.string.batch_scan_start);
     }
 
     private void handleScanResult(String text) {
@@ -112,6 +160,20 @@ public class BatchScanActivity extends BaseActivity {
         } else {
             textCounter.setText(getString(R.string.batch_scan_counter, scanCount));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isScanning) {
+            barcodeScanner.resume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        barcodeScanner.pause();
     }
 
     @Override
