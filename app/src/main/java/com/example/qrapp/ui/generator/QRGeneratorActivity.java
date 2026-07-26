@@ -69,9 +69,11 @@ public class QRGeneratorActivity extends BaseActivity {
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     viewModel.setBarcodeType(type);
-                    if (binding.editContent.getText() != null && binding.editContent.getText().length() > 0) {
-                        viewModel.generateQRCode(String.valueOf(binding.editContent.getText()));
-                    }
+                    binding.imageQr.setVisibility(View.GONE);
+                    binding.emptyPreview.setVisibility(View.VISIBLE);
+                    binding.btnSave.setEnabled(false);
+                    binding.btnShare.setEnabled(false);
+                    binding.layoutQrActions.setVisibility(View.GONE);
                 }
             });
             binding.chipGroupBarcodeType.addView(chip);

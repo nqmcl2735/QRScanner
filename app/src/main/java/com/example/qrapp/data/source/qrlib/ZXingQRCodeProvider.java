@@ -11,6 +11,7 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.pdf417.encoder.Compaction;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ public class ZXingQRCodeProvider implements IQRCodeProvider {
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         if (format == BarcodeFormat.QR_CODE) {
             hints.put(EncodeHintType.MARGIN, 2);
+        } else if (format == BarcodeFormat.PDF_417) {
+            hints.put(EncodeHintType.PDF417_COMPACTION, Compaction.AUTO);
         }
         BitMatrix matrix = new MultiFormatWriter().encode(content, format, width, height, hints);
         int[] pixels = new int[width * height];
