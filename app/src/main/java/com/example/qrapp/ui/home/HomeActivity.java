@@ -31,7 +31,7 @@ public class HomeActivity extends BaseActivity {
             registerForActivityResult(new ScanContract(), result -> {
                 if (result.getContents() == null) return;
                 String scannedText = result.getContents();
-                saveAndOpenDetail(scannedText);
+                saveAndOpenDetail(scannedText, result.getBarcodeImagePath());
             });
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +53,21 @@ public class HomeActivity extends BaseActivity {
         options.setPrompt(getString(R.string.camera_scan_description));
         options.setCameraId(0);
         options.setBeepEnabled(true);
-        options.setBarcodeImageEnabled(false);
-        options.setOrientationLocked(true);
+        options.setBarcodeImageEnabled(true);
+        options.setOrientationLocked(false);
         cameraScanLauncher.launch(options);
     }
 
-    private void saveAndOpenDetail(String scannedText) {
+    private void saveAndOpenDetail(String scannedText, String imagePath) {
         HistoryRepository historyRepository = new HistoryRepository(this, new HistorySqliteDataSource(this));
         executor.execute(() -> {
             try {
                 ParsedQRContent parsed = QRContentParser.parse(scannedText);
-                long id = historyRepository.saveEntry(scannedText, parsed.getType(), HistorySource.SCANNED, null).getId();
+                android.graphics.Bitmap bitmap = null;
+                if (imagePath != null) {
+                    bitmap = android.graphics.BitmapFactory.decodeFile(imagePath);
+                }
+                long id = historyRepository.saveEntry(scannedText, parsed.getType(), HistorySource.SCANNED, bitmap).getId();
                 runOnUiThread(() -> {
                     Intent intent = new Intent(this, QRDetailActivity.class);
                     intent.putExtra(QRDetailActivity.EXTRA_HISTORY_ID, id);
