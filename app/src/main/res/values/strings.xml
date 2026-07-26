@@ -70,7 +70,7 @@
     <string name="type_label_phone">Số điện thoại</string>
     <string name="type_label_sms">Tin nhắn SMS</string>
     <string name="type_label_url">Liên kết</string>
-
+    <string name="deleted_success">Đã xóa khỏi lịch sử</string>
     <string name="copy_image_action">Sao chép ảnh QR</string>
     <string name="copy_image_error">Không có ảnh QR để sao chép</string>
     <string name="copied_image">Đã sao chép ảnh QR</string>
