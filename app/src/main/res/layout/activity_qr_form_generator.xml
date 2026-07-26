@@ -429,7 +429,7 @@
                     <FrameLayout
                         android:layout_width="200dp"
                         android:layout_height="200dp"
-                        android:background="@drawable/bg_qr_placeholder">
+                        android:background="@drawable/bg_soft_circle">
 
                         <ImageView
                             android:id="@+id/image_qr"
@@ -449,7 +449,7 @@
                             <ImageView
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:src="@drawable/ic_qr_code"
+                                android:src="@drawable/ic_qr"
                                 app:tint="?attr/colorOutline" />
 
                             <TextView
@@ -484,7 +484,7 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:text="Lưu"
-                            app:icon="@drawable/ic_save"
+                            app:icon="@drawable/ic_copy"
                             android:enabled="false" />
 
                         <com.google.android.material.button.MaterialButton

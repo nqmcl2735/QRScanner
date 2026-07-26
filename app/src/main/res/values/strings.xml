@@ -134,4 +134,7 @@
     <string name="import_success">Đã nhập %d mục lịch sử</string>
     <string name="import_error">Không thể nhập dữ liệu. Vui lòng kiểm tra định dạng file.</string>
     <string name="export_file_name">qr_history</string>
+    <string name="color_section_title">Tùy chỉnh màu sắc</string>
+    <string name="color_foreground">Màu mã</string>
+    <string name="color_background">Màu nền</string>
 </resources>
