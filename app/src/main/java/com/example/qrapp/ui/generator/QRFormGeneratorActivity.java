@@ -69,6 +69,28 @@ public class QRFormGeneratorActivity extends BaseActivity {
 
         binding.chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
             for (LinearLayout form : forms) form.setVisibility(View.GONE);
+            
+            // clear preview and actions
+            binding.imageQr.setVisibility(View.GONE);
+            binding.emptyPreview.setVisibility(View.VISIBLE);
+            binding.btnSave.setEnabled(false);
+            binding.btnShare.setEnabled(false);
+            binding.layoutQrActions.setVisibility(View.GONE);
+            
+            // clear inputs
+            binding.editSsid.setText("");
+            binding.editWifiPassword.setText("");
+            binding.editContactName.setText("");
+            binding.editContactPhone.setText("");
+            binding.editContactEmail.setText("");
+            binding.editEmailAddress.setText("");
+            binding.editEmailSubject.setText("");
+            binding.editEmailBody.setText("");
+            binding.editPhoneNumber.setText("");
+            binding.editSmsPhone.setText("");
+            binding.editSmsBody.setText("");
+            binding.editUrl.setText("");
+
             if (checkedIds.isEmpty()) {
                 selectedType = null;
                 binding.btnGenerate.setEnabled(false);
@@ -186,8 +208,9 @@ public class QRFormGeneratorActivity extends BaseActivity {
                 }
                 return true;
             case "email":
-                if (getText(binding.editEmailAddress).isEmpty()) {
-                    showMessage(getString(R.string.form_error_email));
+                String emailStr = getText(binding.editEmailAddress);
+                if (emailStr.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailStr).matches()) {
+                    showMessage("Email không hợp lệ");
                     return false;
                 }
                 return true;
@@ -204,8 +227,9 @@ public class QRFormGeneratorActivity extends BaseActivity {
                 }
                 return true;
             case "url":
-                if (getText(binding.editUrl).isEmpty()) {
-                    showMessage(getString(R.string.form_error_url));
+                String urlStr = getText(binding.editUrl);
+                if (urlStr.isEmpty() || !android.util.Patterns.WEB_URL.matcher(urlStr).matches()) {
+                    showMessage("Liên kết không hợp lệ");
                     return false;
                 }
                 return true;
