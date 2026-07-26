@@ -27,6 +27,18 @@ public class HistoryActivity extends BaseActivity implements HistoryAdapter.List
     private HistoryViewModel viewModel;
     private HistoryAdapter adapter;
 
+    private final androidx.activity.result.ActivityResultLauncher<String> exportLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv"),
+            uri -> {
+                if (uri != null) viewModel.exportHistory(uri, getContentResolver());
+            });
+
+    private final androidx.activity.result.ActivityResultLauncher<String[]> importLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.OpenDocument(),
+            uri -> {
+                if (uri != null) viewModel.importHistory(uri, getContentResolver());
+            });
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHistoryBinding.inflate(getLayoutInflater());
@@ -42,6 +54,19 @@ public class HistoryActivity extends BaseActivity implements HistoryAdapter.List
 
         binding.toolbar.setNavigationContentDescription(R.string.navigate_up);
         binding.toolbar.setNavigationOnClickListener(view -> finish());
+        
+        binding.toolbar.inflateMenu(R.menu.menu_history);
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_export) {
+                exportLauncher.launch(getString(R.string.export_file_name) + ".csv");
+                return true;
+            } else if (item.getItemId() == R.id.action_import) {
+                importLauncher.launch(new String[]{"text/csv", "*/*"});
+                return true;
+            }
+            return false;
+        });
+
         observeState();
     }
 
@@ -58,6 +83,9 @@ public class HistoryActivity extends BaseActivity implements HistoryAdapter.List
             binding.recyclerHistory.setVisibility(empty ? View.GONE : View.VISIBLE);
         });
         viewModel.getLoading().observe(this, loading -> binding.progress.setVisibility(Boolean.TRUE.equals(loading) ? View.VISIBLE : View.GONE));
+        viewModel.getMessage().observe(this, msg -> {
+            if (msg != null && !msg.isEmpty()) showMessage(msg);
+        });
     }
 
     @Override
