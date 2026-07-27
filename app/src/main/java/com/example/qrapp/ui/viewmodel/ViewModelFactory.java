@@ -10,6 +10,7 @@ import com.example.qrapp.data.repository.QRScannerRepository;
 import com.example.qrapp.ui.detail.QRDetailViewModel;
 import com.example.qrapp.ui.generator.QRGeneratorViewModel;
 import com.example.qrapp.ui.history.HistoryViewModel;
+import com.example.qrapp.ui.scanner.CameraScannerViewModel;
 import com.example.qrapp.ui.scanner.QRScannerViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -33,6 +34,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         return new ViewModelFactory(null, repository, historyRepository);
     }
 
+    public static ViewModelFactory forCameraScanner(HistoryRepository historyRepository) {
+        return new ViewModelFactory(null, null, historyRepository);
+    }
+
     public static ViewModelFactory forHistory(HistoryRepository historyRepository) {
         return new ViewModelFactory(null, null, historyRepository);
     }
@@ -45,6 +50,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(QRScannerViewModel.class) && scannerRepository != null) {
             return (T) new QRScannerViewModel(scannerRepository, historyRepository);
+        }
+        if (modelClass.isAssignableFrom(CameraScannerViewModel.class) && historyRepository != null) {
+            return (T) new CameraScannerViewModel(historyRepository);
         }
         if (modelClass.isAssignableFrom(HistoryViewModel.class) && historyRepository != null) {
             return (T) new HistoryViewModel(historyRepository);

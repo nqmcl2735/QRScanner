@@ -12,6 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.QRScanner">
+        <activity android:name=".ui.scanner.CameraCaptureActivity" android:exported="false" />
+        <activity android:name=".ui.scanner.CameraScannerActivity" android:exported="false" />
         <activity android:name=".ui.scanner.QRScannerActivity" android:exported="false" />
         <activity android:name=".ui.generator.QRGeneratorActivity" android:exported="false" />
         <activity android:name=".ui.history.HistoryActivity" android:exported="false" />
