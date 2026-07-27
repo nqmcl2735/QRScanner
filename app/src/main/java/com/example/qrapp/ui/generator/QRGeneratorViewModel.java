@@ -13,6 +13,7 @@ import com.example.qrapp.util.QRContentParser;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import com.example.qrapp.data.model.BarcodeType;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,6 +26,7 @@ public class QRGeneratorViewModel extends ViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
     private final MutableLiveData<ParsedQRContent> parsedContent = new MutableLiveData<>();
+    private final MutableLiveData<BarcodeType> selectedBarcodeType = new MutableLiveData<>(BarcodeType.QR_CODE);
     private Bitmap currentBitmap;
 
     public QRGeneratorViewModel(QRGeneratorRepository repository, HistoryRepository historyRepository) {
@@ -37,7 +39,9 @@ public class QRGeneratorViewModel extends ViewModel {
     public LiveData<String> getError() { return error; }
     public LiveData<Boolean> getLoading() { return loading; }
     public LiveData<ParsedQRContent> getParsedContent() { return parsedContent; }
+    public LiveData<BarcodeType> getSelectedBarcodeType() { return selectedBarcodeType; }
     public Bitmap getCurrentBitmap() { return currentBitmap; }
+    public void setBarcodeType(BarcodeType type) { selectedBarcodeType.setValue(type); }
 
     public void generateQRCode(String rawText) {
         String text = rawText == null ? "" : rawText.trim();
@@ -48,7 +52,15 @@ public class QRGeneratorViewModel extends ViewModel {
         loading.setValue(true);
         executor.execute(() -> {
             try {
-                currentBitmap = repository.generateQRBitmap(text, 1024);
+                BarcodeType type = selectedBarcodeType.getValue();
+                if (type == null) type = BarcodeType.QR_CODE;
+                int width = 1024;
+                int height = 1024;
+                if (type != BarcodeType.QR_CODE && type != BarcodeType.DATA_MATRIX && type != BarcodeType.AZTEC) {
+                    width = 1024;
+                    height = 300;
+                }
+                currentBitmap = repository.generateBarcodeBitmap(text, width, height, type.getZxingFormat());
                 ParsedQRContent parsed = QRContentParser.parse(text);
                 qrBitmap.postValue(currentBitmap);
                 parsedContent.postValue(parsed);
