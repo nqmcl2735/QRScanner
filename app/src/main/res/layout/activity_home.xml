@@ -157,6 +157,31 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_form_generate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
+                app:rippleColor="@color/accent_teal_soft"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="18dp">
+                    <FrameLayout android:layout_width="52dp" android:layout_height="52dp" android:background="@drawable/bg_soft_circle" android:backgroundTint="@color/accent_teal_soft" android:padding="13dp">
+                        <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:contentDescription="@null" android:src="@drawable/ic_forms" android:tint="@color/accent_teal" />
+                    </FrameLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/form_generate_card_title" android:textColor="@color/text_primary" android:textSize="17sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:text="@string/form_generate_card_description" android:textColor="@color/text_secondary" android:textSize="13sp" />
+                    </LinearLayout>
+                    <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="@null" android:src="@drawable/ic_arrow_forward" android:tint="@color/text_secondary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_scan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -16,6 +16,7 @@
         <activity android:name=".ui.scanner.CameraScannerActivity" android:exported="false" />
         <activity android:name=".ui.scanner.QRScannerActivity" android:exported="false" />
         <activity android:name=".ui.generator.QRGeneratorActivity" android:exported="false" />
+        <activity android:name=".ui.generator.QRFormGeneratorActivity" android:exported="false" />
         <activity android:name=".ui.history.HistoryActivity" android:exported="false" />
         <activity android:name=".ui.detail.QRDetailActivity" android:exported="false" />
         <activity

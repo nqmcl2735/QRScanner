@@ -6,6 +6,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import com.example.qrapp.databinding.ActivityHomeBinding;
 import com.example.qrapp.ui.base.BaseActivity;
+import com.example.qrapp.ui.generator.QRFormGeneratorActivity;
 import com.example.qrapp.ui.generator.QRGeneratorActivity;
 import com.example.qrapp.ui.history.HistoryActivity;
 import com.example.qrapp.ui.scanner.CameraScannerActivity;
@@ -21,6 +22,7 @@ public class HomeActivity extends BaseActivity {
         insetsController.setAppearanceLightStatusBars(false);
         binding.cardGenerate.setOnClickListener(view -> startActivity(new Intent(this, QRGeneratorActivity.class)));
         binding.cardCameraScan.setOnClickListener(view -> startActivity(new Intent(this, CameraScannerActivity.class)));
+        binding.cardFormGenerate.setOnClickListener(view -> startActivity(new Intent(this, QRFormGeneratorActivity.class)));
         binding.cardScan.setOnClickListener(view -> startActivity(new Intent(this, QRScannerActivity.class)));
         binding.cardHistory.setOnClickListener(view -> startActivity(new Intent(this, HistoryActivity.class)));
     }
