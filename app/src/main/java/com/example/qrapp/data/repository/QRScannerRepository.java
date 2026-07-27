@@ -17,7 +17,7 @@ public class QRScannerRepository {
 
     public ScanResult decodeQRFromUri(Uri uri) throws Exception {
         Bitmap bitmap = storage.loadImageAsBitmap(uri);
-        String text = provider.decode(bitmap);
-        return new ScanResult(text, bitmap);
+        com.google.zxing.Result result = provider.decode(bitmap);
+        return new ScanResult(result.getText(), bitmap, result.getBarcodeFormat().name());
     }
 }

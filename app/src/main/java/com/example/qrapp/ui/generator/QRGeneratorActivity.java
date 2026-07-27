@@ -24,6 +24,8 @@ import com.example.qrapp.ui.base.BaseActivity;
 import com.example.qrapp.ui.viewmodel.ViewModelFactory;
 import com.example.qrapp.util.QRActionBinder;
 import com.example.qrapp.util.ShareUtil;
+import com.example.qrapp.data.model.BarcodeType;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 
 public class QRGeneratorActivity extends BaseActivity {
@@ -56,9 +58,32 @@ public class QRGeneratorActivity extends BaseActivity {
         binding.btnSave.setOnClickListener(view -> saveWithPermission());
         binding.btnShare.setOnClickListener(view -> ShareUtil.showShareChooser(this,
                 String.valueOf(binding.editContent.getText()), viewModel.getCurrentBitmap()));
+        
+        setupBarcodeTypeChips();
         observeState();
     }
 
+    private void setupBarcodeTypeChips() {
+        for (BarcodeType type : BarcodeType.values()) {
+            Chip chip = new Chip(this);
+            chip.setText(type.getDisplayName());
+            chip.setCheckable(true);
+            if (type == BarcodeType.QR_CODE) {
+                chip.setChecked(true);
+            }
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    viewModel.setBarcodeType(type);
+                    binding.imageQr.setVisibility(View.GONE);
+                    binding.emptyPreview.setVisibility(View.VISIBLE);
+                    binding.btnSave.setEnabled(false);
+                    binding.btnShare.setEnabled(false);
+                    binding.layoutQrActions.setVisibility(View.GONE);
+                }
+            });
+            binding.chipGroupBarcodeType.addView(chip);
+        }
+    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN && binding != null
