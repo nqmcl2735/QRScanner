@@ -1,10 +1,14 @@
 package com.example.qrapp.ui.generator;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
@@ -47,6 +51,7 @@ public class QRGeneratorActivity extends BaseActivity {
         binding.toolbar.setNavigationContentDescription(R.string.navigate_up);
         binding.toolbar.setNavigationOnClickListener(view -> finish());
         binding.btnGenerate.setOnClickListener(view -> {
+            dismissContentInput();
             binding.inputLayout.setError(null);
             viewModel.generateQRCode(String.valueOf(binding.editContent.getText()));
         });
@@ -78,6 +83,25 @@ public class QRGeneratorActivity extends BaseActivity {
             });
             binding.chipGroupBarcodeType.addView(chip);
         }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN && binding != null
+                && binding.editContent.hasFocus()) {
+            Rect inputBounds = new Rect();
+            binding.inputLayout.getGlobalVisibleRect(inputBounds);
+            if (!inputBounds.contains((int) event.getRawX(), (int) event.getRawY())) {
+                dismissContentInput();
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void dismissContentInput() {
+        binding.editContent.clearFocus();
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(binding.editContent.getWindowToken(), 0);
     }
 
     private void observeState() {
