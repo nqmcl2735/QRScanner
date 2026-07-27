@@ -77,7 +77,7 @@
     <string name="cancel_action">Hủy</string>
     <string name="delete_confirm_title">Xóa mã QR này?</string>
     <string name="delete_confirm_message">Mã QR sẽ bị xóa khỏi lịch sử và không thể khôi phục.</string>
-    <string name="deleted_success">Đã xóa 
+    <string name="deleted_success">Đã xóa khỏi lịch sử </string>
     <string name="barcode_type_title">Lo\u1ea1i m\u00e3</string>
     <string name="export_csv">Xuất CSV</string>
     <string name="import_csv">Nhập CSV</string>
