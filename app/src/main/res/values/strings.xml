@@ -70,6 +70,7 @@
     <string name="type_label_phone">Số điện thoại</string>
     <string name="type_label_sms">Tin nhắn SMS</string>
     <string name="type_label_url">Liên kết</string>
+
     <string name="copy_image_action">Sao chép ảnh QR</string>
     <string name="copy_image_error">Không có ảnh QR để sao chép</string>
     <string name="copied_image">Đã sao chép ảnh QR</string>
@@ -86,4 +87,33 @@
     <string name="import_success">Đã nhập %d mục lịch sử</string>
     <string name="import_error">Không thể nhập dữ liệu. Vui lòng kiểm tra định dạng file.</string>
     <string name="export_file_name">qr_history</string>
+
+    <string name="form_generator_title">Tạo mã QR nâng cao</string>
+    <string name="form_generator_subtitle">Chọn loại nội dung để bắt đầu</string>
+    <string name="form_generate_card_title">Tạo mã nâng cao</string>
+    <string name="form_generate_card_description">Wifi, Danh bạ, Email, SMS và hơn thế nữa</string>
+    <string name="chip_wifi">Wifi</string>
+    <string name="chip_contact">Danh bạ</string>
+    <string name="chip_email">Email</string>
+    <string name="chip_phone">Điện thoại</string>
+    <string name="chip_sms">SMS</string>
+    <string name="chip_url">Liên kết</string>
+    <string name="hint_ssid">Tên mạng (SSID)</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="hint_name">Họ tên</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="hint_email">Địa chỉ email</string>
+    <string name="hint_subject">Tiêu đề</string>
+    <string name="hint_body">Nội dung</string>
+    <string name="hint_url">Nhập đường dẫn URL</string>
+    <string name="hint_sms_body">Nội dung tin nhắn</string>
+    <string name="security_wpa">WPA/WPA2</string>
+    <string name="security_wep">WEP</string>
+    <string name="security_none">Không mã hóa</string>
+    <string name="form_error_ssid">Vui lòng nhập tên mạng</string>
+    <string name="form_error_name">Vui lòng nhập họ tên hoặc số điện thoại</string>
+    <string name="form_error_email">Vui lòng nhập địa chỉ email</string>
+    <string name="form_error_phone">Vui lòng nhập số điện thoại</string>
+    <string name="form_error_url">Vui lòng nhập đường dẫn URL</string>
+    <string name="form_error_sms_phone">Vui lòng nhập số điện thoại nhận</string>
 </resources>
