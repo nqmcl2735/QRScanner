@@ -13,6 +13,7 @@ import com.example.qrapp.util.QRContentParser;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import com.example.qrapp.data.model.BarcodeType;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +30,9 @@ public class QRGeneratorViewModel extends ViewModel {
     private final MutableLiveData<BarcodeType> selectedBarcodeType = new MutableLiveData<>(BarcodeType.QR_CODE);
     private final MutableLiveData<Boolean> qrUpToDate = new MutableLiveData<>(false);
     private Bitmap currentBitmap;
-    private String generatedContent;
+    private volatile String currentContent = "";
+    private volatile String generatedContent;
+    private volatile BarcodeType generatedBarcodeType;
 
     public QRGeneratorViewModel(QRGeneratorRepository repository, HistoryRepository historyRepository) {
         this.repository = repository;
@@ -45,15 +48,31 @@ public class QRGeneratorViewModel extends ViewModel {
     public LiveData<Boolean> getQrUpToDate() { return qrUpToDate; }
     public Bitmap getCurrentBitmap() { return currentBitmap; }
     public String getGeneratedContent() { return generatedContent; }
-    public void setBarcodeType(BarcodeType type) { selectedBarcodeType.setValue(type); }
+    public void setBarcodeType(BarcodeType type) {
+        selectedBarcodeType.setValue(type);
+        updateQrState();
+    }
 
     /** Gọi mỗi khi người dùng thay đổi nội dung nhập để đánh dấu QR hiện tại là cũ. */
-    public void onInputChanged() {
-        qrUpToDate.setValue(false);
+    public void updateCurrentContent(String rawContent) {
+        currentContent = normalizeContent(rawContent);
+        updateQrState();
+    }
+
+    private void updateQrState() {
+        BarcodeType currentType = selectedBarcodeType.getValue();
+        boolean upToDate = currentBitmap != null
+                && Objects.equals(currentContent, generatedContent)
+                && currentType == generatedBarcodeType;
+        qrUpToDate.postValue(upToDate);
+    }
+
+    private static String normalizeContent(String rawContent) {
+        return rawContent == null ? "" : rawContent.trim();
     }
 
     public void generateQRCode(String rawText) {
-        String text = rawText == null ? "" : rawText.trim();
+        String text = normalizeContent(rawText);
         if (text.isEmpty()) {
             error.setValue("Vui lòng nhập nội dung");
             return;
@@ -71,10 +90,11 @@ public class QRGeneratorViewModel extends ViewModel {
                 }
                 currentBitmap = repository.generateBarcodeBitmap(text, width, height, type.getZxingFormat());
                 generatedContent = text;
+                generatedBarcodeType = type;
                 ParsedQRContent parsed = QRContentParser.parse(text);
                 qrBitmap.postValue(currentBitmap);
                 parsedContent.postValue(parsed);
-                qrUpToDate.postValue(true);
+                updateQrState();
                 saveToHistory(text, parsed, currentBitmap);
             } catch (Exception exception) {
                 error.postValue("Không thể tạo mã QR. Vui lòng thử lại.");
