@@ -8,4 +8,5 @@ public interface IHistoryDataSource {
     List<QRHistoryItem> getAll();
     QRHistoryItem getById(long id);
     void delete(long id);
+    void deleteAll();
 }

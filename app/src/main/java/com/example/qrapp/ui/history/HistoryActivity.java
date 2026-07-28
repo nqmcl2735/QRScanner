@@ -63,6 +63,14 @@ public class HistoryActivity extends BaseActivity implements HistoryAdapter.List
             } else if (item.getItemId() == R.id.action_import) {
                 importLauncher.launch(new String[]{"text/csv", "*/*"});
                 return true;
+            } else if (item.getItemId() == R.id.action_delete_all) {
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.delete_all_confirm_title)
+                        .setMessage(R.string.delete_all_confirm_message)
+                        .setNegativeButton(R.string.cancel_action, null)
+                        .setPositiveButton(R.string.delete_action, (dialog, which) -> viewModel.deleteAllHistory())
+                        .show();
+                return true;
             }
             return false;
         });

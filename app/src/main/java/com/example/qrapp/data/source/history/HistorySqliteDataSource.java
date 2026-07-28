@@ -84,6 +84,13 @@ public class HistorySqliteDataSource extends SQLiteOpenHelper implements IHistor
         }
     }
 
+    @Override
+    public void deleteAll() {
+        try (SQLiteDatabase db = getWritableDatabase()) {
+            db.delete(TABLE, null, null);
+        }
+    }
+
     private QRHistoryItem fromCursor(Cursor cursor) {
         return new QRHistoryItem(
                 cursor.getLong(cursor.getColumnIndexOrThrow(COL_ID)),
