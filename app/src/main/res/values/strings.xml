@@ -41,6 +41,7 @@
     <string name="share_content_option">Chia sẻ nội dung</string>
     <string name="share_image_option">Chia sẻ mã QR</string>
     <string name="share_image_error">Không thể chia sẻ ảnh QR</string>
+    <string name="qr_stale_hint">Nội dung đã thay đổi. Vui lòng tạo lại mã QR.</string>
 
     <string name="action_open_maps">Mở Maps</string>
     <string name="action_save_contact">Lưu danh bạ</string>

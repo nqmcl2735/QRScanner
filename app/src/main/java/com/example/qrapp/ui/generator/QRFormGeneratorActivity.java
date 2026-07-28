@@ -271,6 +271,9 @@ public class QRFormGeneratorActivity extends BaseActivity {
         viewModel.getQrUpToDate().observe(this, upToDate -> {
             boolean hasBitmap = viewModel.getCurrentBitmap() != null;
             binding.btnShare.setEnabled(Boolean.TRUE.equals(upToDate) && hasBitmap);
+            // Chỉ hiện cảnh báo khi đã có QR nhưng input đã thay đổi
+            boolean showStaleHint = !Boolean.TRUE.equals(upToDate) && hasBitmap;
+            binding.textStaleHint.setVisibility(showStaleHint ? View.VISIBLE : View.GONE);
         });
         viewModel.getParsedContent().observe(this, parsed -> QRActionBinder.bind(this, binding.layoutQrActions, parsed));
         viewModel.getSavedUri().observe(this, uri -> showMessage(getString(R.string.saved_success)));
