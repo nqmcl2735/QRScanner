@@ -1,11 +1,16 @@
 package com.example.qrapp.ui.generator;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -53,11 +58,38 @@ public class QRFormGeneratorActivity extends BaseActivity {
         binding.toolbar.setNavigationOnClickListener(view -> finish());
 
         setupChipListeners();
-        binding.btnGenerate.setOnClickListener(view -> generateFromForm());
+        binding.btnGenerate.setOnClickListener(view -> {
+            dismissFormInput();
+            generateFromForm();
+        });
         binding.btnSave.setOnClickListener(view -> saveWithPermission());
         binding.btnShare.setOnClickListener(view -> ShareUtil.showShareChooser(this,
                 formatContent(), viewModel.getCurrentBitmap()));
         observeState();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View focusedView = getCurrentFocus();
+            if (focusedView instanceof EditText) {
+                Rect inputBounds = new Rect();
+                focusedView.getGlobalVisibleRect(inputBounds);
+                if (!inputBounds.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    dismissFormInput();
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void dismissFormInput() {
+        View focusedView = getCurrentFocus();
+        if (focusedView == null) return;
+        focusedView.clearFocus();
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
     private void setupChipListeners() {
