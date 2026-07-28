@@ -27,7 +27,9 @@ public class QRGeneratorViewModel extends ViewModel {
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
     private final MutableLiveData<ParsedQRContent> parsedContent = new MutableLiveData<>();
     private final MutableLiveData<BarcodeType> selectedBarcodeType = new MutableLiveData<>(BarcodeType.QR_CODE);
+    private final MutableLiveData<Boolean> qrUpToDate = new MutableLiveData<>(false);
     private Bitmap currentBitmap;
+    private String generatedContent;
 
     public QRGeneratorViewModel(QRGeneratorRepository repository, HistoryRepository historyRepository) {
         this.repository = repository;
@@ -40,8 +42,15 @@ public class QRGeneratorViewModel extends ViewModel {
     public LiveData<Boolean> getLoading() { return loading; }
     public LiveData<ParsedQRContent> getParsedContent() { return parsedContent; }
     public LiveData<BarcodeType> getSelectedBarcodeType() { return selectedBarcodeType; }
+    public LiveData<Boolean> getQrUpToDate() { return qrUpToDate; }
     public Bitmap getCurrentBitmap() { return currentBitmap; }
+    public String getGeneratedContent() { return generatedContent; }
     public void setBarcodeType(BarcodeType type) { selectedBarcodeType.setValue(type); }
+
+    /** Gọi mỗi khi người dùng thay đổi nội dung nhập để đánh dấu QR hiện tại là cũ. */
+    public void onInputChanged() {
+        qrUpToDate.setValue(false);
+    }
 
     public void generateQRCode(String rawText) {
         String text = rawText == null ? "" : rawText.trim();
@@ -61,9 +70,11 @@ public class QRGeneratorViewModel extends ViewModel {
                     height = 300;
                 }
                 currentBitmap = repository.generateBarcodeBitmap(text, width, height, type.getZxingFormat());
+                generatedContent = text;
                 ParsedQRContent parsed = QRContentParser.parse(text);
                 qrBitmap.postValue(currentBitmap);
                 parsedContent.postValue(parsed);
+                qrUpToDate.postValue(true);
                 saveToHistory(text, parsed, currentBitmap);
             } catch (Exception exception) {
                 error.postValue("Không thể tạo mã QR. Vui lòng thử lại.");
