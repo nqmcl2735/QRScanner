@@ -67,6 +67,13 @@
                 android:enabled="false" android:text="@string/share_action" android:textColor="@color/brand_primary"
                 app:icon="@drawable/ic_share" app:iconTint="@color/brand_primary" app:iconGravity="textStart" />
 
+            <TextView
+                android:id="@+id/text_stale_hint"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:gravity="center"
+                android:text="@string/qr_stale_hint" android:textColor="#E65100"
+                android:textSize="13sp" android:visibility="gone" />
+
             <LinearLayout android:id="@+id/layout_qr_actions" android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="4dp" android:orientation="vertical" android:visibility="gone" />
         </LinearLayout>

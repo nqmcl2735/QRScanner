@@ -45,4 +45,12 @@ public class HistoryRepository {
         dataSource.delete(item.getId());
         ImageFileStore.delete(item.getImagePath());
     }
+
+    public void deleteAll() {
+        List<QRHistoryItem> all = dataSource.getAll();
+        for (QRHistoryItem item : all) {
+            ImageFileStore.delete(item.getImagePath());
+        }
+        dataSource.deleteAll();
+    }
 }

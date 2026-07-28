@@ -11,4 +11,9 @@
         android:title="@string/export_csv"
         android:icon="@drawable/ic_share"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_delete_all"
+        android:title="@string/action_delete_all"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="ifRoom" />
 </menu>

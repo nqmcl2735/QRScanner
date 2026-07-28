@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
@@ -57,7 +59,15 @@ public class QRGeneratorActivity extends BaseActivity {
         });
         binding.btnSave.setOnClickListener(view -> saveWithPermission());
         binding.btnShare.setOnClickListener(view -> ShareUtil.showShareChooser(this,
-                String.valueOf(binding.editContent.getText()), viewModel.getCurrentBitmap()));
+                viewModel.getGeneratedContent(), viewModel.getCurrentBitmap()));
+
+        binding.editContent.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                viewModel.onInputChanged();
+            }
+        });
         
         setupBarcodeTypeChips();
         observeState();
@@ -110,7 +120,14 @@ public class QRGeneratorActivity extends BaseActivity {
             binding.imageQr.setVisibility(View.VISIBLE);
             binding.emptyPreview.setVisibility(View.GONE);
             binding.btnSave.setEnabled(true);
-            binding.btnShare.setEnabled(true);
+            binding.btnShare.setEnabled(Boolean.TRUE.equals(viewModel.getQrUpToDate().getValue()));
+        });
+        viewModel.getQrUpToDate().observe(this, upToDate -> {
+            boolean hasBitmap = viewModel.getCurrentBitmap() != null;
+            binding.btnShare.setEnabled(Boolean.TRUE.equals(upToDate) && hasBitmap);
+            // Chỉ hiện cảnh báo khi đã có QR nhưng input đã thay đổi
+            boolean showStaleHint = !Boolean.TRUE.equals(upToDate) && hasBitmap;
+            binding.textStaleHint.setVisibility(showStaleHint ? View.VISIBLE : View.GONE);
         });
         viewModel.getParsedContent().observe(this, parsed -> QRActionBinder.bind(this, binding.layoutQrActions, parsed));
         viewModel.getSavedUri().observe(this, uri -> showMessage(getString(R.string.saved_success)));
@@ -123,6 +140,8 @@ public class QRGeneratorActivity extends BaseActivity {
             binding.progress.setVisibility(active ? View.VISIBLE : View.GONE);
             binding.btnGenerate.setEnabled(!active);
             binding.btnSave.setEnabled(!active && viewModel.getQrBitmap().getValue() != null);
+            binding.btnShare.setEnabled(!active && Boolean.TRUE.equals(viewModel.getQrUpToDate().getValue())
+                    && viewModel.getCurrentBitmap() != null);
         });
     }
 

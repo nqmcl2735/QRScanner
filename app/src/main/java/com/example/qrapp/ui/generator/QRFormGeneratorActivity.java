@@ -28,6 +28,9 @@ import com.example.qrapp.ui.viewmodel.ViewModelFactory;
 import com.example.qrapp.util.QRActionBinder;
 import com.example.qrapp.util.ShareUtil;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -64,7 +67,7 @@ public class QRFormGeneratorActivity extends BaseActivity {
         });
         binding.btnSave.setOnClickListener(view -> saveWithPermission());
         binding.btnShare.setOnClickListener(view -> ShareUtil.showShareChooser(this,
-                formatContent(), viewModel.getCurrentBitmap()));
+                viewModel.getGeneratedContent(), viewModel.getCurrentBitmap()));
         observeState();
     }
 
@@ -138,6 +141,25 @@ public class QRFormGeneratorActivity extends BaseActivity {
                 }
             }
         });
+
+        // Đánh dấu QR là cũ mỗi khi input thay đổi
+        TextWatcher staleWatcher = new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                viewModel.onInputChanged();
+            }
+        };
+        TextInputEditText[] allInputs = {
+                binding.editSsid, binding.editWifiPassword,
+                binding.editContactName, binding.editContactPhone, binding.editContactEmail,
+                binding.editEmailAddress, binding.editEmailSubject, binding.editEmailBody,
+                binding.editPhoneNumber, binding.editSmsPhone, binding.editSmsBody,
+                binding.editUrl
+        };
+        for (TextInputEditText input : allInputs) {
+            input.addTextChangedListener(staleWatcher);
+        }
     }
 
     private String formatContent() {
@@ -276,7 +298,14 @@ public class QRFormGeneratorActivity extends BaseActivity {
             binding.imageQr.setVisibility(View.VISIBLE);
             binding.emptyPreview.setVisibility(View.GONE);
             binding.btnSave.setEnabled(true);
-            binding.btnShare.setEnabled(true);
+            binding.btnShare.setEnabled(Boolean.TRUE.equals(viewModel.getQrUpToDate().getValue()));
+        });
+        viewModel.getQrUpToDate().observe(this, upToDate -> {
+            boolean hasBitmap = viewModel.getCurrentBitmap() != null;
+            binding.btnShare.setEnabled(Boolean.TRUE.equals(upToDate) && hasBitmap);
+            // Chỉ hiện cảnh báo khi đã có QR nhưng input đã thay đổi
+            boolean showStaleHint = !Boolean.TRUE.equals(upToDate) && hasBitmap;
+            binding.textStaleHint.setVisibility(showStaleHint ? View.VISIBLE : View.GONE);
         });
         viewModel.getParsedContent().observe(this, parsed -> QRActionBinder.bind(this, binding.layoutQrActions, parsed));
         viewModel.getSavedUri().observe(this, uri -> showMessage(getString(R.string.saved_success)));
@@ -286,6 +315,8 @@ public class QRFormGeneratorActivity extends BaseActivity {
             binding.progress.setVisibility(active ? View.VISIBLE : View.GONE);
             binding.btnGenerate.setEnabled(!active && selectedType != null);
             binding.btnSave.setEnabled(!active && viewModel.getQrBitmap().getValue() != null);
+            binding.btnShare.setEnabled(!active && Boolean.TRUE.equals(viewModel.getQrUpToDate().getValue())
+                    && viewModel.getCurrentBitmap() != null);
         });
     }
 

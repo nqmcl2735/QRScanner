@@ -41,6 +41,14 @@ public class HistoryViewModel extends ViewModel {
             items.postValue(repository.getAll());
         });
     }
+
+    public void deleteAllHistory() {
+        executor.execute(() -> {
+            repository.deleteAll();
+            items.postValue(repository.getAll());
+            message.postValue("Đã xoá toàn bộ lịch sử");
+        });
+    }
     
     public void exportHistory(android.net.Uri uri, android.content.ContentResolver resolver) {
         loading.setValue(true);
