@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -17,6 +19,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MediaStoreDataSource implements IStorageDataSource {
+    private static final float BORDER_RATIO = 0.04f;
+    private static final int MIN_BORDER_SIZE_PX = 16;
     private final Context context;
 
     public MediaStoreDataSource(Context context) {
@@ -25,6 +29,7 @@ public class MediaStoreDataSource implements IStorageDataSource {
 
     @Override
     public Uri saveImage(Bitmap bitmap, String fileName) throws IOException {
+        Bitmap bitmapWithBorder = withWhiteBorder(bitmap);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
@@ -35,7 +40,7 @@ public class MediaStoreDataSource implements IStorageDataSource {
             Uri uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             if (uri == null) throw new IOException("Không thể tạo tệp ảnh");
             try (OutputStream stream = resolver.openOutputStream(uri)) {
-                if (stream == null || !bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                if (stream == null || !bitmapWithBorder.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
                     resolver.delete(uri, null, null);
                     throw new IOException("Không thể ghi ảnh");
                 }
@@ -50,10 +55,21 @@ public class MediaStoreDataSource implements IStorageDataSource {
         if (!directory.exists() && !directory.mkdirs()) throw new IOException("Không thể tạo thư mục QRApp");
         File file = new File(directory, fileName);
         try (OutputStream stream = new FileOutputStream(file)) {
-            if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)) throw new IOException("Không thể ghi ảnh");
+            if (!bitmapWithBorder.compress(Bitmap.CompressFormat.PNG, 100, stream)) throw new IOException("Không thể ghi ảnh");
         }
         MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, new String[]{"image/png"}, null);
         return Uri.fromFile(file);
+    }
+
+    private Bitmap withWhiteBorder(Bitmap source) {
+        int width = source.getWidth();
+        int height = source.getHeight();
+        int borderSize = Math.max(MIN_BORDER_SIZE_PX, Math.round(Math.min(width, height) * BORDER_RATIO));
+        Bitmap output = Bitmap.createBitmap(width + borderSize * 2, height + borderSize * 2, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(source, borderSize, borderSize, null);
+        return output;
     }
 
     @Override
