@@ -75,6 +75,9 @@ public class QRGeneratorActivity extends BaseActivity {
 
     private void setupBarcodeTypeChips() {
         for (BarcodeType type : BarcodeType.values()) {
+            if (type == BarcodeType.PDF_417) {
+                continue;
+            }
             Chip chip = new Chip(this);
             chip.setText(type.getDisplayName());
             chip.setCheckable(true);
