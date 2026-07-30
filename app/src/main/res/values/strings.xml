@@ -42,6 +42,15 @@
     <string name="share_image_option">Chia sẻ mã QR</string>
     <string name="share_image_error">Không thể chia sẻ ảnh QR</string>
     <string name="qr_stale_hint">Nội dung đã thay đổi. Vui lòng tạo lại mã QR.</string>
+    <string name="barcode_format_guide_qr_code">Định dạng QR Code: Hỗ trợ văn bản tự do, URL, email, số điện thoại hoặc nội dung tùy ý.</string>
+    <string name="barcode_format_guide_ean_13">Định dạng EAN-13: Nhập đúng 13 chữ số (0-9).</string>
+    <string name="barcode_format_guide_ean_8">Định dạng EAN-8: Nhập đúng 8 chữ số (0-9).</string>
+    <string name="barcode_format_guide_upc_a">Định dạng UPC-A: Nhập đúng 12 chữ số (0-9).</string>
+    <string name="barcode_format_guide_code_128">Định dạng Code 128: Hỗ trợ chuỗi ký tự chữ/số và ký tự đặc biệt phổ biến.</string>
+    <string name="barcode_format_guide_code_39">Định dạng Code 39: Dùng A-Z, 0-9 và các ký tự - . $ / + % (kèm khoảng trắng).</string>
+    <string name="barcode_format_guide_pdf_417">Định dạng PDF417: Phù hợp dữ liệu dài hoặc nhiều dòng văn bản.</string>
+    <string name="barcode_format_guide_data_matrix">Định dạng Data Matrix: Phù hợp văn bản ngắn đến trung bình, tối ưu cho dữ liệu gọn.</string>
+    <string name="barcode_format_guide_aztec">Định dạng Aztec: Hỗ trợ văn bản, mã định danh và URL.</string>
 
     <string name="action_open_maps">Mở Maps</string>
     <string name="action_save_contact">Lưu danh bạ</string>

@@ -33,6 +33,14 @@
                     android:maxLength="2000" android:paddingTop="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/text_format_guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_generate" style="@style/Widget.QRScanner.PrimaryButton"
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp"

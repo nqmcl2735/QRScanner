@@ -84,6 +84,7 @@ public class QRGeneratorActivity extends BaseActivity {
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     viewModel.setBarcodeType(type);
+                    updateFormatGuide(type);
                     binding.imageQr.setVisibility(View.GONE);
                     binding.emptyPreview.setVisibility(View.VISIBLE);
                     binding.btnSave.setEnabled(false);
@@ -93,6 +94,42 @@ public class QRGeneratorActivity extends BaseActivity {
             });
             binding.chipGroupBarcodeType.addView(chip);
         }
+        updateFormatGuide(BarcodeType.QR_CODE);
+    }
+
+    private void updateFormatGuide(BarcodeType type) {
+        int guideRes;
+        switch (type) {
+            case EAN_13:
+                guideRes = R.string.barcode_format_guide_ean_13;
+                break;
+            case EAN_8:
+                guideRes = R.string.barcode_format_guide_ean_8;
+                break;
+            case UPC_A:
+                guideRes = R.string.barcode_format_guide_upc_a;
+                break;
+            case CODE_128:
+                guideRes = R.string.barcode_format_guide_code_128;
+                break;
+            case CODE_39:
+                guideRes = R.string.barcode_format_guide_code_39;
+                break;
+            case PDF_417:
+                guideRes = R.string.barcode_format_guide_pdf_417;
+                break;
+            case DATA_MATRIX:
+                guideRes = R.string.barcode_format_guide_data_matrix;
+                break;
+            case AZTEC:
+                guideRes = R.string.barcode_format_guide_aztec;
+                break;
+            case QR_CODE:
+            default:
+                guideRes = R.string.barcode_format_guide_qr_code;
+                break;
+        }
+        binding.textFormatGuide.setText(guideRes);
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
